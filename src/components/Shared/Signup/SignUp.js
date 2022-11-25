@@ -30,7 +30,6 @@ const SignUp = () => {
                         toast.success('user updated');
                         saveUser(name, email, role);
                         navigate('/');
-
                     })
                     .catch(err => console.error(err))
             })
@@ -50,17 +49,17 @@ const SignUp = () => {
 
     const saveUser = (name, email, role) => {
         const verified = false ;
-        const isAdmin = false;
         const wishlist = [ ];
         
         let user = null;
 
         if(role === 'seller'){
-            user = {name, email, role, isAdmin, verified};
+            user = {name, email, role, verified};
         }
         if(role === 'buyer'){
-            user = {name, email, role, isAdmin, wishlist};
+            user = {name, email, role, wishlist};
         }
+        
         fetch('http://localhost:5000/users', {
             method : 'POST',
             headers : {

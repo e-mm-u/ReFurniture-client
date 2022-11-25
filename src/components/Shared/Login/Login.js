@@ -36,9 +36,18 @@ const Login = () => {
 
     }
     const saveUser = (name, email, role) => {
-        const isAdmin = false;
-        const user = {name, email, role, isAdmin};
-        // console.log('user in save user google log in ', user)
+        const verified = false ;
+        const wishlist = [ ];
+        
+        let user = null;
+
+        if(role === 'seller'){
+            user = {name, email, role, verified};
+        }
+        if(role === 'buyer'){
+            user = {name, email, role, wishlist};
+        }
+        
         fetch('http://localhost:5000/users', {
             method : 'POST',
             headers : {
@@ -48,8 +57,8 @@ const Login = () => {
         })
         .then(res => res.json())
         .then(data => {
-            // console.log('data got in saved user from login page ',data);
-            
+            // console.log('data got in saved user ',data);
+            navigate('/');
         })
     }
     return (
