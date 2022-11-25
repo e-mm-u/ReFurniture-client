@@ -1,20 +1,109 @@
+import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthContextProvider';
+import Loading from '../../Shared/Loading/Loading';
 
 const AddProduct = () => {
 
     const {user} = useContext(AuthContext);
-    console.log(user)
+    console.log(user);
+
+    const {data : seller = null, isLoading} = useQuery({
+        queryKey : ['seller'],
+        queryFn : async ()=>{
+            try{
+                const res = await fetch(`http://localhost:5000/users?email=${user.email}`);
+                const data = await res.json();
+                return data;
+            }catch(err){
+                console.error(err);
+            }
+        }
+    })
+
+    
 
     const imageHostKey = process.env.REACT_APP_imgbb_key;
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
 
-    const handleAddProduct = formdata => {
-        console.log({formdata})
+    if(isLoading){
+        return <Loading></Loading>
+    }
 
+    const handleAddProduct = formdata => {
+        console.log({formdata});
+
+        const {category, condition, used, product_name, desc, price_buy, price_sale, seller_phone, location} = formdata;
+        const image = formdata.image[0];
+
+        const posted_on = gettime();
+        // const seller = ;
+        const buyer = { };
+
+        // --------------------------section to handle image
+        const imgFormData = new FormData();
+        imgFormData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`
+            // fetch post to upload image on imgbb and get url
+        fetch(url, {
+            method : 'POST',
+            body : imgFormData
+        })
+        .then(res => res.json())
+        .then(imgData => {
+            if(imgData.success){
+                const imgURL = imgData.data.url ;
+
+                // -------------------- time to gather all product info to post on db
+                const productInfo = {
+                    category, condition, used, 
+                    product_name, desc, price_buy, price_sale, 
+                    image : imgURL , 
+                    seller_phone, location,
+                    seller, buyer,
+                    reported : false,
+                    paid : false,
+                    posted_on,
+                    advertise : false
+                };
+
+                // ------- we got all info, let's post it on mongodb
+                fetch('http://localhost:5000/products',{
+                    method : 'POST',
+                    headers : {
+                        'content-type' : 'application/json'
+                    },
+                    body : JSON.stringify(productInfo)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    toast.success('Product added successfully');
+                    navigate('/dashboard/myproducts')
+                })
+
+            }
+        })
+
+
+
+        
+
+
+    }
+    const gettime = () =>{
+
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        const time = [day, month, year].join('-');
+        return time;
     }
 
     return (
@@ -40,7 +129,7 @@ const AddProduct = () => {
                                 <option value='kids_room'>Kid's room</option>
                                 <option value='dining_kitchen'>Dining & Kitchen</option>
                                 <option value='others'>Others</option>
-                                
+
                             </select>
                             <div className="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
                                 <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
