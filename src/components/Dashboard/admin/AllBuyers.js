@@ -1,18 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import toast from 'react-hot-toast';
+import Loading from '../../Shared/Loading/Loading';
 
 const AllBuyers = () => {
-    const [buyers, setbuyers] = useState([]);
+    const {data : buyers = [], isLoading, refetch} = useQuery({
+        queryKey : ['buyers'],
+        queryFn : async () =>{
+            try{
+                const res = await fetch(`http://localhost:5000/users?role=buyer`);
+                const data = await res.json();
+                return data;
+            }catch(err){
+                console.error(err);
+            }
+        }
+    })
+
+    const handleDelete = buyer => {
+        const {name, role, _id} = buyer;
+        console.log({_id});
+
+        let confirmation = null;
+        if(window.confirm(`Do you really want to delete ${role} : ${name}`)){
+            confirmation = true;
+        }else{
+            confirmation = false;
+        }
+        if(confirmation){
+
+            fetch(`http://localhost:5000/users/${_id}`, {
+                method : 'DELETE',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.deletedCount === 1){
+                        toast.success(`${role}:${name}  \nDeleted successfully`);
+                        refetch();
+                    }
+                })
+        }
+
+    }
     
-    useEffect(()=>{
-        fetch(`http://localhost:5000/users?role=buyer`)
-        .then(res => res.json())
-        .then(data => {
-            // console.log(data);
-            setbuyers(data);
-        });
-    },[])
-    
-    
+    if(isLoading){
+        return <Loading></Loading>
+    }
         
     return (
         <div className="overflow-x-auto">
@@ -34,8 +67,8 @@ const AllBuyers = () => {
                                 <td>{buyer.name}</td>
                                 <td>{buyer.email}</td>
                                 <td className='flex gap-2'>
-                                    <button>Delete</button>
-                                    <button>Make admin</button>
+                                    <button onClick={()=>handleDelete(buyer)} className='btn btn-outline btn-xs'>Delete</button>
+                                    <button className='btn btn-outline btn-xs'>Make admin</button>
                                 </td>
                             </tr>
                         )
