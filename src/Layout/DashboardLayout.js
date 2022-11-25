@@ -25,9 +25,9 @@ const DashboardLayout = () => {
             </>)
             case 'seller':
                 return (<>
-                <li><Link to='/addproduct'>Add Product</Link></li>
-                <li><Link to='/myproducts'>My Products</Link></li>
-                <li><Link to='/mybuyers'>My Buyers</Link></li>
+                <li><Link to='/dashboard/addproduct'>Add Product</Link></li>
+                <li><Link to='/dashboard/myproducts'>My Products</Link></li>
+                <li><Link to='/dashboard/mybuyers'>My Buyers</Link></li>
             </>)
             case 'buyer':
                 return (<>

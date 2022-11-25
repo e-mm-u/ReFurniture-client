@@ -4,6 +4,9 @@ import AllSeller from "../components/Dashboard/admin/AllSeller";
 import ReportedProducts from "../components/Dashboard/admin/ReportedProducts";
 import MyPurchase from "../components/Dashboard/buyer/MyPurchase";
 import Wishlist from "../components/Dashboard/buyer/Wishlist";
+import AddProduct from "../components/Dashboard/seller/AddProduct";
+import Mybuyers from "../components/Dashboard/seller/Mybuyers";
+import MyProducts from "../components/Dashboard/seller/MyProducts";
 import Home from "../components/Home/Home";
 import Login from "../components/Shared/Login/Login";
 import SignUp from "../components/Shared/Signup/SignUp";
@@ -31,6 +34,7 @@ export const routes = createBrowserRouter([
                 path : '/dashboard',
                 element : <DashboardLayout></DashboardLayout>,
                 children : [
+                    // ------------------- ADMIN ROUTES ----------------------------
                     {
                         path : '/dashboard/allsellers',
                         element : <AllSeller></AllSeller>
@@ -43,6 +47,21 @@ export const routes = createBrowserRouter([
                         path : '/dashboard/reportedproducts',
                         element : <ReportedProducts></ReportedProducts>
                     },
+                    // ------------------- SELLER ROUTES ----------------------------
+                    {
+                        path : '/dashboard/addproduct',
+                        element : <AddProduct></AddProduct>
+                    },
+                    {
+                        path : '/dashboard/myproducts',
+                        element : <MyProducts></MyProducts>
+                    },
+                    {
+                        path : '/dashboard/mybuyers',
+                        element : <Mybuyers></Mybuyers>
+                    },
+                    // ------------------- BUYER ROUTES ----------------------------
+
                     {
                         path : '/dashboard/myPurchase',
                         element : <MyPurchase></MyPurchase>
