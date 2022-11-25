@@ -1,16 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import toast from 'react-hot-toast';
+import Loading from '../../Shared/Loading/Loading';
 
 const AllSeller = () => {
-    const [sellers, setSellers] = useState([]);
+    // const [sellers, setSellers] = useState([]);
+    // const [verified, setVerified] = useState(false);
     
-    useEffect(()=>{
-        fetch(`http://localhost:5000/users?role=seller`)
-        .then(res => res.json())
-        .then(data => {
-            // console.log(data);
-            setSellers(data);
-        });
-    },[])
+    // useEffect(()=>{
+    //     fetch(`http://localhost:5000/users?role=seller`)
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         // console.log(data);
+    //         setSellers(data);
+    //     });
+    // },[]);
+    const {data : sellers = [], isLoading, refetch} = useQuery({
+        queryKey : ['sellers'],
+        queryFn : async () =>{
+            try{
+                const res = await fetch(`http://localhost:5000/users?role=seller`);
+                const data = await res.json();
+                return data;
+            }catch(err){
+                console.error(err);
+            }
+        }
+    })
+
+    const handleDelete = seller => {
+        const {name, role, _id} = seller;
+        console.log({_id});
+
+        let confirmation = null;
+        if(window.confirm(`Do you really want to delete ${role} : ${name}`)){
+            confirmation = true;
+        }else{
+            confirmation = false;
+        }
+        if(confirmation){
+
+            fetch(`http://localhost:5000/users/${_id}`, {
+                method : 'DELETE',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.deletedCount === 1){
+                        toast.success(`${role}:${name}  \nDeleted successfully`);
+                        refetch();
+                    }
+                })
+        }
+
+    }
+    if(isLoading){
+        return <Loading></Loading>
+    }
     return (
         <div className="overflow-x-auto">
             <table className="table table-compact table-zebra w-full">
@@ -19,6 +64,7 @@ const AllSeller = () => {
                         <th></th> 
                         <th>Name</th> 
                         <th>Email</th> 
+                        <th>Status</th> 
                         <th>Action</th> 
                     </tr>
                 </thead>
@@ -30,9 +76,17 @@ const AllSeller = () => {
                                 <th>{i+1}</th>
                                 <td>{seller.name}</td>
                                 <td>{seller.email}</td>
+                                <td>
+                                    {
+                                    seller.verified ? 
+                                        <button className='btn btn-outline btn-xs'>Verified</button> 
+                                        : 
+                                        <button className='btn btn-outline btn-xs'>Verify</button>
+                                    }
+                                </td>
                                 <td className='flex gap-2'>
-                                    <button>Delete</button>
-                                    <button>Make admin</button>
+                                    <button onClick={()=>handleDelete(seller)} className='btn btn-outline btn-xs'>Delete</button>
+                                    <button className='btn btn-outline btn-xs'>Make admin</button>
                                 </td>
                             </tr>
                         )

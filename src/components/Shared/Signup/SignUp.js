@@ -49,8 +49,18 @@ const SignUp = () => {
     }
 
     const saveUser = (name, email, role) => {
+        const verified = false ;
         const isAdmin = false;
-        const user = {name, email, role, isAdmin};
+        const wishlist = [ ];
+        
+        let user = null;
+
+        if(role === 'seller'){
+            user = {name, email, role, isAdmin, verified};
+        }
+        if(role === 'buyer'){
+            user = {name, email, role, isAdmin, wishlist};
+        }
         fetch('http://localhost:5000/users', {
             method : 'POST',
             headers : {
