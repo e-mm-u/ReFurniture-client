@@ -7,6 +7,7 @@ import Wishlist from "../components/Dashboard/buyer/Wishlist";
 import AddProduct from "../components/Dashboard/seller/AddProduct";
 import Mybuyers from "../components/Dashboard/seller/Mybuyers";
 import MyProducts from "../components/Dashboard/seller/MyProducts";
+import CategoryProduct from "../components/Home/Categories/CategoryProduct";
 import Home from "../components/Home/Home";
 import Login from "../components/Shared/Login/Login";
 import SignUp from "../components/Shared/Signup/SignUp";
@@ -29,6 +30,12 @@ export const routes = createBrowserRouter([
             {
                 path : '/login',
                 element : <Login></Login>
+            },
+            {
+                path : '/products/category/:id',
+                element : <CategoryProduct></CategoryProduct>,
+                loader : ({params})=>fetch(`http://localhost:5000/products?category=${params.id}`)
+                
             },
             {
                 path : '/dashboard',
