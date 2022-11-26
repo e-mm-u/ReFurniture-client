@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import BookingModal from '../../Shared/Modal/BookingModal';
 
 const CategoryProduct = () => {
     const products = useLoaderData();
+    const [product, setProduct] = useState(null);
     return (
         <div>
             <div className='flex justify-center items-center gap-5 flex-wrap'>
@@ -23,7 +25,15 @@ const CategoryProduct = () => {
                                     </div>
                                     <p>{product.desc}</p>
                                     <div className="card-actions justify-center">
-                                        <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-yellow-300">buy</div>
+                                        {/*  book is modal triggure button */}
+                                        <label
+                                            htmlFor='booking-modal'
+                                            onClick={() => { setProduct(product) }}
+                                            className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-yellow-300"
+                                        >
+                                            book
+                                        </label>
+
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-blue-200"> details </div>
@@ -42,6 +52,11 @@ const CategoryProduct = () => {
                     )
                 }
             </div>
+            {
+                product && <BookingModal
+                    product ={product}                
+                ></BookingModal>
+            }
         </div>
     );
 };
