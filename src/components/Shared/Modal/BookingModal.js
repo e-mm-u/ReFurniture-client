@@ -1,16 +1,25 @@
 import React, { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../../Context/AuthContextProvider';
 
 const BookingModal = ({ product }) => {
     const { user } = useContext(AuthContext);
-    const { product_name, price_sale, price_buy } = product;
+    const { product_name, price_sale, price_buy, _id } = product;
+
+    const {register, handleSubmit, reset} = useForm();
+
+    const handleBooking = data => {
+        reset();
+        console.log({data}, {_id})
+    }
+
     return (
         <div>
             <input type="checkbox" id="booking-modal" className='modal-toggle' />
             <div className="modal">
                 <div className="modal-box relative w-[80vw]">
                     <label htmlFor="booking-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    <form className=''>
+                    <form onSubmit={handleSubmit(handleBooking)}>
 
                         <div className="form-control my-2">
                             <label className='flex flex-col gap-1 text-center'>
@@ -46,11 +55,27 @@ const BookingModal = ({ product }) => {
                             <div className="form-control flex flex-row w-full gap-4 my-2">
                                 <label className="flex flex-col w-1/2 text-center gap-1">
                                     <span className='font-semibold'>Phone</span>
-                                    <input type="text" placeholder='ex : 01XXXXXXXX' className="input input-bordered"/>
+                                    <input 
+                                        {...register("phone", {
+                                            required: "required to book a product",
+                                        })}
+                                        type="text" 
+                                        placeholder='ex : 01XXXXXXXX' 
+                                        className="input input-bordered"
+                                        required
+                                    />
                                 </label>
+
                                 <label className="flex flex-col w-1/2 text-center gap-1">
                                     <span className='font-semibold'>Location</span>
-                                    <input type="text" placeholder='ex : Dhaka' className="input input-bordered"/>
+                                    <input 
+                                        {...register("location", {
+                                            required: "required to book a product",
+                                        })}
+                                        type="text" 
+                                        placeholder='ex : Dhaka' 
+                                        className="input input-bordered"
+                                    />
                                 </label>
                             </div>
                         </div>
