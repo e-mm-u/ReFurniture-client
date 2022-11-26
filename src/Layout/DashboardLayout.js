@@ -32,6 +32,7 @@ const DashboardLayout = () => {
             case 'buyer':
                 return (<>
                 <li><Link to='/dashboard/myPurchase'>My Purchase</Link></li>
+                <li><Link to='/dashboard/booking'>My Booking</Link></li>
                 <li><Link to='/dashboard/wishlist'>My Wishlist</Link></li> 
             </>)
             default:
