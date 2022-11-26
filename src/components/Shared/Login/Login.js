@@ -38,6 +38,7 @@ const Login = () => {
     const saveUser = (name, email, role) => {
         const verified = false ;
         const wishlist = [ ];
+        const booking = [ ];
         
         let user = null;
 
@@ -45,7 +46,7 @@ const Login = () => {
             user = {name, email, role, verified};
         }
         if(role === 'buyer'){
-            user = {name, email, role, wishlist};
+            user = {name, email, role, wishlist, booking};
         }
         
         fetch('http://localhost:5000/users', {
