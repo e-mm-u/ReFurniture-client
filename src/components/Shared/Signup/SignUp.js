@@ -1,15 +1,24 @@
-import React, { useContext} from 'react';
+import React, { useContext, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthContextProvider';
+import useToken from '../../../hooks/useToken';
 
 
 const SignUp = () => {
     const { register, handleSubmit } = useForm();
     const { createUser, updateUser, googleLogin} = useContext(AuthContext);
     // const [registerError, setRegisterError] = useState('')
+
+    const [userEmail, setUserEmail] = useState('');
+    const { token } = useToken(userEmail);
+
     const navigate = useNavigate();
+
+    if(token){
+        navigate('/')
+    }
 
     const handleSignUp = data => {
         // console.log('signup form data ',data);
@@ -29,7 +38,6 @@ const SignUp = () => {
                         // console.log('user Updated');
                         toast.success('user updated');
                         saveUser(name, email, role);
-                        navigate('/');
                     })
                     .catch(err => console.error(err))
             })
@@ -42,7 +50,6 @@ const SignUp = () => {
                 const role = 'buyer';
                 // console.log('google login ', user);
                 saveUser(user.displayName, user.email, role);
-                navigate('/');
             })
             .catch(err => console.error(err))
     }
@@ -71,7 +78,9 @@ const SignUp = () => {
         .then(res => res.json())
         .then(data => {
             // console.log('data got in saved user ',data);
-            navigate('/');
+            //  we are here means user is saved in db
+            //  now time to request for the jwt token
+            setUserEmail(email); // it will use useToken hook to get jwt token
         })
     }
 

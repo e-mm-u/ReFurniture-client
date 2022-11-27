@@ -1,12 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthContextProvider';
+import useToken from '../../../hooks/useToken';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const {login, googleLogin} = useContext(AuthContext);
+
+    const [userEmail, setUserEmail] = useState('');
+    const {token} = useToken(userEmail);
+
     const navigate = useNavigate();
+
+    if(token){
+        navigate('/');
+    }
+    
     
     const handleLogin = data => {
         // console.log('clicked')
@@ -17,7 +27,7 @@ const Login = () => {
         login(email, password)
             .then((result)=>{
                 const user = result.user;
-                navigate('/')
+                setUserEmail(email);
                 // console.log('email pass login user', user)
             })
             .catch(err=>console.error(err))
@@ -30,7 +40,6 @@ const Login = () => {
                 const role = 'buyer';
                 // console.log('google login ', user);
                 saveUser(user.displayName, user.email, role);
-                navigate('/');
             })
             .catch(err => console.error(err))
 
@@ -59,7 +68,7 @@ const Login = () => {
         .then(res => res.json())
         .then(data => {
             // console.log('data got in saved user ',data);
-            navigate('/');
+            setUserEmail(email);
         })
     }
     return (
