@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Blog from "../components/Blog/Blog";
 import AllBuyers from "../components/Dashboard/admin/AllBuyers";
 import AllSeller from "../components/Dashboard/admin/AllSeller";
 import ReportedProducts from "../components/Dashboard/admin/ReportedProducts";
@@ -11,6 +12,7 @@ import MyProducts from "../components/Dashboard/seller/MyProducts";
 import CategoryProduct from "../components/Home/Categories/CategoryProduct";
 import Home from "../components/Home/Home";
 import Payment from "../components/Payment/Payment";
+import Error404 from "../components/Shared/Error404/Error404";
 import Login from "../components/Shared/Login/Login";
 import SignUp from "../components/Shared/Signup/SignUp";
 import DashboardLayout from "../Layout/DashboardLayout";
@@ -38,6 +40,11 @@ export const routes = createBrowserRouter([
                 element : <CategoryProduct></CategoryProduct>,
                 loader : ({params})=>fetch(`http://localhost:5000/products?category=${params.id}`)
                 
+            },
+            // -------------------------- blog ----------------------------------------
+            {
+                path : '/blog',
+                element : <Blog></Blog>
             },
             // -------------------------- PAYMENT ----------------------------------------
             {
@@ -92,5 +99,10 @@ export const routes = createBrowserRouter([
                 ]
             }
         ]
+
+    },
+    {
+        path : "*",
+        element : <Error404></Error404>
     }
 ])
