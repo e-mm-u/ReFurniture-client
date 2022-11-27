@@ -18,7 +18,7 @@ const Navbar = () => {
     }
 
     const menuItems = <>
-            <li className='text-navy-600 hover:text-red-700 hover:font-semibold'><Link> Blog </Link></li>
+            <li className='text-navy-600 hover:text-red-700 hover:font-semibold'><Link to='/blog'> Blog </Link></li>
         {!user &&
             <>
                 <li className='text-navy-600 hover:text-red-700 hover:font-semibold'><Link to='/login'> Login </Link></li>

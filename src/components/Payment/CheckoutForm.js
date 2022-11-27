@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form';
 
 
 const CheckoutForm = ({ product }) => {
+    console.log("P Key",process.env.REACT_APP_stripe_pk)
+    console.log("s Key",process.env.STRIPE_SK)
+
     const { user } = useContext(AuthContext);
     const [cardError, setCardError] = useState('');
     const [success, setSuccess] = useState('');
@@ -23,7 +26,8 @@ const CheckoutForm = ({ product }) => {
         fetch('http://localhost:5000/create-payment-intent', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorizarion : `bearer ${process.env.STRIPE_SK}`
             },
             body: JSON.stringify({ price: price_sale })
         })
@@ -107,7 +111,7 @@ const CheckoutForm = ({ product }) => {
     }
 
     return (
-        <div>
+        <div className='p-12'>
             <form onSubmit={handleSubmit(handlePayment)}>
 
                 <div className="form-control">
