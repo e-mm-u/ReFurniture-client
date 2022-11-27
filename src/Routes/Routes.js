@@ -10,6 +10,7 @@ import Mybuyers from "../components/Dashboard/seller/Mybuyers";
 import MyProducts from "../components/Dashboard/seller/MyProducts";
 import CategoryProduct from "../components/Home/Categories/CategoryProduct";
 import Home from "../components/Home/Home";
+import Payment from "../components/Payment/Payment";
 import Login from "../components/Shared/Login/Login";
 import SignUp from "../components/Shared/Signup/SignUp";
 import DashboardLayout from "../Layout/DashboardLayout";
@@ -37,6 +38,12 @@ export const routes = createBrowserRouter([
                 element : <CategoryProduct></CategoryProduct>,
                 loader : ({params})=>fetch(`http://localhost:5000/products?category=${params.id}`)
                 
+            },
+            // -------------------------- PAYMENT ----------------------------------------
+            {
+                path : '/payment/:id',
+                element : <Payment></Payment>,
+                loader : ({params}) => fetch(`http://localhost:5000/products/${params.id}`)      
             },
             {
                 path : '/dashboard',

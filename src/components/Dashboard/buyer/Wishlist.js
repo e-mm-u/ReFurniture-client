@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthContextProvider';
 
 const Wishlist = () => {
@@ -35,7 +36,12 @@ const Wishlist = () => {
                                     </div>
                                     <p>{product.desc}</p>
                                     <div className="card-actions justify-center">
-                                    <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-green-400">buy</div>
+                                        <Link 
+                                            to={`/payment/${product._id}`}
+                                            className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-green-400"
+                                        >
+                                            Buy
+                                        </Link>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-blue-200"> details </div>
