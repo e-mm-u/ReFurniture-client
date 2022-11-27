@@ -17,6 +17,10 @@ import Login from "../components/Shared/Login/Login";
 import SignUp from "../components/Shared/Signup/SignUp";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Main from "../Layout/Main";
+import AdminRoutes from "./AdminRoutes";
+import BuyerRoutes from "./BuyerRoutes";
+import PrivateRoutes from "./PrivateRoutes";
+import SellerRoutes from "./SellerRoutes";
 
 export const routes = createBrowserRouter([
     {
@@ -37,7 +41,7 @@ export const routes = createBrowserRouter([
             },
             {
                 path : '/products/category/:id',
-                element : <CategoryProduct></CategoryProduct>,
+                element : <PrivateRoutes><CategoryProduct></CategoryProduct></PrivateRoutes>,
                 loader : ({params})=>fetch(`http://localhost:5000/products?category=${params.id}`)
                 
             },
@@ -54,47 +58,47 @@ export const routes = createBrowserRouter([
             },
             {
                 path : '/dashboard',
-                element : <DashboardLayout></DashboardLayout>,
+                element : <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes> ,
                 children : [
                     // ------------------- ADMIN ROUTES ----------------------------
                     {
                         path : '/dashboard/allsellers',
-                        element : <AllSeller></AllSeller>
+                        element : <AdminRoutes><AllSeller></AllSeller></AdminRoutes>
                     },
                     {
                         path : '/dashboard/allbuyers',
-                        element : <AllBuyers></AllBuyers>
+                        element : <AdminRoutes><AllBuyers></AllBuyers></AdminRoutes>
                     },
                     {
                         path : '/dashboard/reportedproducts',
-                        element : <ReportedProducts></ReportedProducts>
+                        element : <AdminRoutes><ReportedProducts></ReportedProducts></AdminRoutes>
                     },
                     // ------------------- SELLER ROUTES ----------------------------
                     {
                         path : '/dashboard/addproduct',
-                        element : <AddProduct></AddProduct>
+                        element : <SellerRoutes><AddProduct></AddProduct></SellerRoutes>
                     },
                     {
                         path : '/dashboard/myproducts',
-                        element : <MyProducts></MyProducts>
+                        element : <SellerRoutes><MyProducts></MyProducts></SellerRoutes>
                     },
                     {
                         path : '/dashboard/mybuyers',
-                        element : <Mybuyers></Mybuyers>
+                        element : <SellerRoutes><Mybuyers></Mybuyers></SellerRoutes>
                     },
                     // ------------------- BUYER ROUTES ----------------------------
 
                     {
                         path : '/dashboard/myPurchase',
-                        element : <MyPurchase></MyPurchase>
+                        element : <BuyerRoutes><MyPurchase></MyPurchase></BuyerRoutes>
                     },
                     {
                         path : '/dashboard/booking',
-                        element : <MyBooking></MyBooking>
+                        element : <BuyerRoutes><MyBooking></MyBooking></BuyerRoutes>
                     },
                     {
                         path : '/dashboard/wishlist',
-                        element : <Wishlist></Wishlist>
+                        element : <BuyerRoutes><Wishlist></Wishlist></BuyerRoutes>
                     }
                 ]
             }
