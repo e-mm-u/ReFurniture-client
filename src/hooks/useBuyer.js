@@ -10,13 +10,12 @@ const useBuyer = email => {
             fetch(`http://localhost:5000/users/buyer/${email}`)
                 .then(res => res.json())
                 .then(data => {
-                    setIsBuyer(data.isAdmin);
+                    setIsBuyer(data.isBuyer);
                     setBuyerLoading(false);
                 })
         }
 
     },[email])
-
 
     return [isBuyer, buyerLoading] ;
 };

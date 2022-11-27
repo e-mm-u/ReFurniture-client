@@ -17,7 +17,6 @@ const useAdmin = email => {
 
     },[email])
 
-
     return [isAdmin, adminLoading] ;
 };
 
