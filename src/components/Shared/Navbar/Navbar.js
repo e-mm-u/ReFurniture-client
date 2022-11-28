@@ -2,14 +2,10 @@ import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthContextProvider';
-import Loading from '../Loading/Loading';
 
 const Navbar = () => {
-    const { user, loading, logOut } = useContext(AuthContext);
+    const { user, logOut } = useContext(AuthContext);
 
-    if(loading) {
-        return <Loading></Loading>
-    }
     // console.log('user in navbar', user);
     const handleLogOut = () =>{
         logOut()

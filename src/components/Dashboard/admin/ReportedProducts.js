@@ -100,8 +100,8 @@ const ReportedProducts = () => {
 
                                 {/* price */}
                                 <td className=''>
+                                    <p>{product?.price_buy}</p>
                                     <p>{product?.price_sale}</p>
-                                    <p>{product?.transaction_id ? product.transaction_id : null}</p>
                                 </td>
 
                                 <td><button onClick={()=>handleDelete(product)}>delete</button></td>

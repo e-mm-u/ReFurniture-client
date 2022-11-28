@@ -27,18 +27,22 @@ export const routes = createBrowserRouter([
         path : '/',
         element : <Main></Main>,
         children : [
+            // -------------------------- home ----------------------------------------
             {
                 path : '/',
                 element : <Home></Home>
             },
+            // -------------------------- sign up ----------------------------------------
             {
                 path : '/signup',
                 element : <SignUp></SignUp>
             },
+            // -------------------------- log in ----------------------------------------
             {
                 path : '/login',
                 element : <Login></Login>
             },
+            // -------------------------- products by category ----------------------------------------
             {
                 path : '/products/category/:id',
                 element : <PrivateRoutes><CategoryProduct></CategoryProduct></PrivateRoutes>,

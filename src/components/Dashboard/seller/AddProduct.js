@@ -23,7 +23,6 @@ const AddProduct = () => {
             }
         }
     })
-
     
 
     const imageHostKey = process.env.REACT_APP_imgbb_key;
@@ -72,10 +71,11 @@ const AddProduct = () => {
                 };
 
                 // ------- we got all info, let's post it on mongodb
-                fetch('http://localhost:5000/products',{
+                fetch('http://localhost:5000/seller/products',{
                     method : 'POST',
                     headers : {
-                        'content-type' : 'application/json'
+                        'content-type' : 'application/json',
+                        authorization : `bearer ${localStorage.getItem('access_token')}`
                     },
                     body : JSON.stringify(productInfo)
                 })
