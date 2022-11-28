@@ -10,7 +10,11 @@ const MyBooking = () => {
     const {data : booking_products = null} = useQuery({
         queryKey : ['booking_products'],
         queryFn : async ()=>{
-            const res = await fetch(`http://localhost:5000/products/booking?email=${user?.email}`);
+            const res = await fetch(`http://localhost:5000/buyer/products/booking?email=${user?.email}`,{
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }                
+            });
             const data = await res.json();
 
             return data ;
@@ -24,8 +28,8 @@ const MyBooking = () => {
                         <th></th> 
                         <th>Product</th> 
                         <th>Seller Details</th> 
-                        <th>Buying Price &  <br /> Selling Price</th> 
-                        <th>Payment status</th> 
+                        <th>Buying Price &  <br /> Selling Price</th>
+                        <th> Status & Action</th>
                     </tr>
                 </thead>
 
@@ -63,14 +67,34 @@ const MyBooking = () => {
                                     <p>{product?.price_sale}</p>
                                 </td>
 
-                                <td>
+                                <td className='flex gap-3 items-center'>
+                                { 
+                                    (product.paid && (product.buyer.email === user.email)) && 
+                                    <>
+                                    <div className="badge badge-outline bg-yellow-400">It's YOURS</div>
+                                    <div className="badge badge-outline bg-green-600">Paid</div>
+                                    </>
+                                }
+                                { 
+                                    (product.paid && (product.buyer.email !== user.email)) && 
+                                    <>
+                                    <div className="badge badge-outline bg-red-300">Already sold</div>
+                                    <div className='btn btn-sm btn-outline bg-green-500 hover:bg-orange-500 text-white disabled'>Pay</div>
+                                    </>
+                                }
+                                { 
+                                    !product.paid  && 
+                                    <>
+                                    <div className="badge badge-outline bg-yellow-400">Available</div>
                                     <Link 
                                         to={`/payment/${product._id}`}
                                         className='btn btn-sm btn-outline bg-green-500 hover:bg-orange-500 text-white'
                                     >
                                         Pay now
                                     </Link>
-                                    <button className='btn btn-sm btn-outline bg-red-300 hover:bg-red-500 text-white'>delete</button>
+                                    </>
+                                }
+                                    <button className='btn btn-sm btn-outline bg-red-300 hover:bg-red-500 text-white'>Delete</button>
                                 </td>
                             </tr>
                         )

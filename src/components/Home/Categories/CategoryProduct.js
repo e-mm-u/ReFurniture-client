@@ -1,10 +1,56 @@
-import React, { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../Context/AuthContextProvider';
 import BookingModal from '../../Shared/Modal/BookingModal';
 
 const CategoryProduct = () => {
+    const {user} = useContext(AuthContext);
     const products = useLoaderData();
     const [product, setProduct] = useState(null);
+    const navigate = useNavigate();
+
+    // add product to users wishlist
+    const handleWishlist = product => {
+       
+        fetch(`http://localhost:5000/users?email=${user?.email}`, {
+            method : 'PUT',
+            headers : {
+                'content-type' : 'application/json'
+            },
+            body : JSON.stringify({product_id : product._id, wishlist : true })
+        })
+        .then(res => res.json() )
+        .then(data =>{
+            if(data.acknowledged){
+                toast.success('Product kept in wishlist successfully');
+                navigate('/dashboard/wishlist');
+            }
+            console.log(data);
+        })
+
+    }
+
+    // report a product
+    const handleReport = product => {
+
+        fetch(`http://localhost:5000/products/${product._id}`, {
+            method : 'PUT',
+            headers : {
+                'content-type' : 'application/json'
+            },
+            body : JSON.stringify({ reported : true })
+        })
+        .then(res => res.json() )
+        .then(data =>{
+            if(data.acknowledged){
+                toast.success('Product reported to admin');
+            }
+            console.log(data);
+        })
+
+    }
+
     return (
         <div>
             <div className='flex justify-center items-center gap-5 flex-wrap'>
@@ -34,8 +80,18 @@ const CategoryProduct = () => {
                                             book
                                         </label>
 
-                                        <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div>
-                                        <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div>
+                                        <div 
+                                            onClick={()=>handleWishlist(product)}
+                                            className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400"
+                                            >
+                                            add to wishlist
+                                        </div>
+                                        <div 
+                                            onClick={()=>handleReport(product)}
+                                            className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400"
+                                            >
+                                                report
+                                        </div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-blue-200"> details </div>
                                     </div>
                                 </div>

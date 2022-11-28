@@ -25,7 +25,7 @@ const BookingModal = ({ product }) => {
         .then(data =>{
             if(data.acknowledged){
                 toast.success('Product booked successfully');
-                navigate('/dashboard/myPurchase');
+                navigate('/dashboard/booking');
             }
             console.log(data);
         })

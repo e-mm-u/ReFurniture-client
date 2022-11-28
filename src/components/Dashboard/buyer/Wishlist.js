@@ -9,7 +9,11 @@ const Wishlist = () => {
     const {data : wishlist_products = null} = useQuery({
         queryKey : ['wishlist_products'],
         queryFn : async ()=>{
-            const res = await fetch(`http://localhost:5000/products/wishlist?email=${user?.email}`);
+            const res = await fetch(`http://localhost:5000/buyer/products/wishlist?email=${user?.email}`,{
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                } 
+            });
             const data = await res.json();
 
             return data ;
@@ -17,7 +21,7 @@ const Wishlist = () => {
     })
     return (
         <div>
-            I wish to buy all these :)
+            <h1 className='text-lg text-center font-semibold my-4 p-2'>I wish to buy all these :) </h1>
             <div className='flex justify-center items-center gap-5 flex-wrap'>
                 {
                     wishlist_products?.map(product =>
@@ -32,6 +36,8 @@ const Wishlist = () => {
                                         <div className="card-actions justify-end">
                                             <div className="badge badge-outline bg-purple-300">{product.condition}</div>
                                             <div className="badge badge-outline bg-pink-200">{product.used}</div>
+                                            { product.paid && <div className="badge badge-outline bg-yellow-400">Sold</div>}
+                                            { !product.paid && <div className="badge badge-outline bg-yellow-400">Available</div>}
                                         </div>
                                     </div>
                                     <p>{product.desc}</p>
@@ -42,7 +48,6 @@ const Wishlist = () => {
                                         >
                                             Buy
                                         </Link>
-                                        <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div>
                                         <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-blue-200"> details </div>
                                     </div>
