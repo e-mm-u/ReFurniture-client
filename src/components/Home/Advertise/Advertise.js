@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Loading from '../../Shared/Loading/Loading';
 
 const Advertise = () => {
@@ -22,8 +23,8 @@ const Advertise = () => {
                 !products.length ?
                     <> </> :
                     <div>
-                        <h1 className="h1ider">Check ads if it matches your need</h1>
-                        <div className='flex justify-center items-center gap-5 flex-wrap'>
+                        <h1 className="text-center text-xl my-5 font-semibold">Check ads if it matches your need</h1>
+                        <div className='flex justify-center items-center gap-5 flex-wrap my-12'>
                             {
                                 products?.map(product =>
                                     <div key={product._id} className=''>
@@ -41,10 +42,10 @@ const Advertise = () => {
                                                 </div>
                                                 <p>{product.desc}</p>
                                                 <div className="card-actions justify-center">
-                                                    <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">book</div>
-                                                    <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div>
-                                                    <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div>
-                                                    <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-blue-200"> details </div>
+                                                    {/* <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">book</div> */}
+                                                    {/* <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-pink-400">add to wishlist</div> */}
+                                                    {/* <div className="uppercase btn btn-xs hover:bg-blue-400 text-black bg-red-400">report</div> */}
+                                                    <Link to='/products/category/bed_room' className="uppercase btn btn-sm hover:bg-blue-400 text-black bg-blue-200"> details </Link>
                                                 </div>
                                             </div>
                                             <div className='card-footer p-2 flex justify-between'>

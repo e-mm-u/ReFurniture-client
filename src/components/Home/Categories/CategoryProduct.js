@@ -52,7 +52,7 @@ const CategoryProduct = () => {
     }
 
     return (
-        <div>
+        <div className='my-10'>
             <div className='flex justify-center items-center gap-5 flex-wrap'>
                 {
                     products?.map(product =>
