@@ -11,9 +11,9 @@ const AllSeller = () => {
         queryKey : ['sellers'],
         queryFn : async () =>{
             try{
-                // const res = await fetch(`http://localhost:5000/users?role=seller`);
+                // const res = await fetch(`https://server-two-mu.vercel.app/users?role=seller`);
                 console.log(user?.email);
-                const res = await fetch(`http://localhost:5000/admin/users/sellers?email=${user?.email}`,
+                const res = await fetch(`https://server-two-mu.vercel.app/admin/users/sellers?email=${user?.email}`,
                     {
                         headers : {
                             authorization : `bearer ${localStorage.getItem('access_token')}`
@@ -42,7 +42,7 @@ const AllSeller = () => {
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/admin/users/sellers/${_id}`, {
+            fetch(`https://server-two-mu.vercel.app/admin/users/sellers/${_id}`, {
                 method : 'DELETE',
                 headers : {
                     authorization : `bearer ${localStorage.getItem('access_token')}`
@@ -72,7 +72,7 @@ const AllSeller = () => {
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/admin/users/sellers/${_id}`, {
+            fetch(`https://server-two-mu.vercel.app/admin/users/sellers/${_id}`, {
                 method : 'PUT',
                 headers : {
                     authorization : `bearer ${localStorage.getItem('access_token')}`

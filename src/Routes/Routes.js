@@ -46,7 +46,7 @@ export const routes = createBrowserRouter([
             {
                 path : '/products/category/:id',
                 element : <PrivateRoutes><CategoryProduct></CategoryProduct></PrivateRoutes>,
-                loader : ({params})=>fetch(`http://localhost:5000/products?category=${params.id}`)
+                loader : ({params})=>fetch(`https://server-two-mu.vercel.app/products?category=${params.id}`)
                 
             },
             // -------------------------- blog ----------------------------------------
@@ -58,7 +58,7 @@ export const routes = createBrowserRouter([
             {
                 path : '/payment/:id',
                 element : <Payment></Payment>,
-                loader : ({params}) => fetch(`http://localhost:5000/products/${params.id}`)      
+                loader : ({params}) => fetch(`https://server-two-mu.vercel.app/products/${params.id}`)      
             },
             {
                 path : '/dashboard',

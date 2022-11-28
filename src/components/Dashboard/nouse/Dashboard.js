@@ -8,7 +8,7 @@ const Dashboard = () => {
     const { user } = useContext(AuthContext);
     const [role, setRole] = useState(null)
     const email = user?.email;
-    fetch(`http://localhost:5000/users?email=${email}`)
+    fetch(`https://server-two-mu.vercel.app/users?email=${email}`)
         .then(res => res.json())
         .then(data => {
             // console.log(data);

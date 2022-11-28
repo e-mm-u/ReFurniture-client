@@ -11,7 +11,7 @@ const ReportedProducts = () => {
         queryKey : ['products'],
         queryFn : async () =>{
             try{
-                const res = await fetch(`http://localhost:5000/admin/products/reported?email=${user?.email}`,
+                const res = await fetch(`https://server-two-mu.vercel.app/admin/products/reported?email=${user?.email}`,
                     {
                         headers : {
                             authorization : `bearer ${localStorage.getItem('access_token')}`
@@ -38,7 +38,7 @@ const ReportedProducts = () => {
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/admin/products/reported/${_id}`, {
+            fetch(`https://server-two-mu.vercel.app/admin/products/reported/${_id}`, {
                 method : 'DELETE',
                 headers : {
                     authorization : `bearer ${localStorage.getItem('access_token')}`

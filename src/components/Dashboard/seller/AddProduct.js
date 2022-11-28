@@ -15,7 +15,7 @@ const AddProduct = () => {
         queryKey : ['seller'],
         queryFn : async ()=>{
             try{
-                const res = await fetch(`http://localhost:5000/users?email=${user.email}`);
+                const res = await fetch(`https://server-two-mu.vercel.app/users?email=${user.email}`);
                 const data = await res.json();
                 return data;
             }catch(err){
@@ -71,7 +71,7 @@ const AddProduct = () => {
                 };
 
                 // ------- we got all info, let's post it on mongodb
-                fetch('http://localhost:5000/seller/products',{
+                fetch('https://server-two-mu.vercel.app/seller/products',{
                     method : 'POST',
                     headers : {
                         'content-type' : 'application/json',

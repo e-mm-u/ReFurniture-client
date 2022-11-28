@@ -8,7 +8,7 @@ const MyPurchase = () => {
     const {data : purchased_products = null} = useQuery({
         queryKey : ['purchased_products'],
         queryFn : async ()=>{
-            const res = await fetch(`http://localhost:5000/products/purchasedby?email=${user?.email}`);
+            const res = await fetch(`https://server-two-mu.vercel.app/products/purchasedby?email=${user?.email}`);
             const data = await res.json();
             return data ;
         }

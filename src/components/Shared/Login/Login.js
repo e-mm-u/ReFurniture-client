@@ -58,7 +58,7 @@ const Login = () => {
             user = {name, email, role, wishlist, booking};
         }
         
-        fetch('http://localhost:5000/users', {
+        fetch('https://server-two-mu.vercel.app/users', {
             method : 'POST',
             headers : {
                 'content-type' : 'application/json'

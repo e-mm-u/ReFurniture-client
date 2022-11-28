@@ -14,7 +14,7 @@ const BookingModal = ({ product }) => {
     const handleBooking = data => {
         reset();
        
-        fetch(`http://localhost:5000/users?email=${user?.email}`, {
+        fetch(`https://server-two-mu.vercel.app/users?email=${user?.email}`, {
             method : 'PUT',
             headers : {
                 'content-type' : 'application/json'

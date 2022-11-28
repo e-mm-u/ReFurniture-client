@@ -10,7 +10,7 @@ const MyBooking = () => {
     const {data : booking_products = null} = useQuery({
         queryKey : ['booking_products'],
         queryFn : async ()=>{
-            const res = await fetch(`http://localhost:5000/buyer/products/booking?email=${user?.email}`,{
+            const res = await fetch(`https://server-two-mu.vercel.app/buyer/products/booking?email=${user?.email}`,{
                 headers : {
                     authorization : `bearer ${localStorage.getItem('access_token')}`
                 }                

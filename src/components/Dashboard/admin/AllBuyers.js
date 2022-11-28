@@ -11,7 +11,7 @@ const AllBuyers = () => {
         queryKey : ['buyers'],
         queryFn : async () =>{
             try{
-                const res = await fetch(`http://localhost:5000/admin/users/buyers?email=${user?.email}`,
+                const res = await fetch(`https://server-two-mu.vercel.app/admin/users/buyers?email=${user?.email}`,
                     {
                         headers : {
                             authorization : `bearer ${localStorage.getItem('access_token')}`
@@ -39,7 +39,7 @@ const AllBuyers = () => {
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/admin/users/buyers/${_id}`, {
+            fetch(`https://server-two-mu.vercel.app/admin/users/buyers/${_id}`, {
                 method : 'DELETE',
                 headers : {
                     authorization : `bearer ${localStorage.getItem('access_token')}`

@@ -13,7 +13,7 @@ const CategoryProduct = () => {
     // add product to users wishlist
     const handleWishlist = product => {
        
-        fetch(`http://localhost:5000/users?email=${user?.email}`, {
+        fetch(`https://server-two-mu.vercel.app/users?email=${user?.email}`, {
             method : 'PUT',
             headers : {
                 'content-type' : 'application/json'
@@ -34,7 +34,7 @@ const CategoryProduct = () => {
     // report a product
     const handleReport = product => {
 
-        fetch(`http://localhost:5000/products/${product._id}`, {
+        fetch(`https://server-two-mu.vercel.app/products/${product._id}`, {
             method : 'PUT',
             headers : {
                 'content-type' : 'application/json'
