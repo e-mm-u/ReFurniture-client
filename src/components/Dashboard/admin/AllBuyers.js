@@ -1,14 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
+import { AuthContext } from '../../../Context/AuthContextProvider';
 import Loading from '../../Shared/Loading/Loading';
 
 const AllBuyers = () => {
+    const {user, loading} = useContext(AuthContext);
+
     const {data : buyers = [], isLoading, refetch} = useQuery({
         queryKey : ['buyers'],
         queryFn : async () =>{
             try{
-                const res = await fetch(`http://localhost:5000/users?role=buyer`);
+                const res = await fetch(`http://localhost:5000/admin/users/buyers?email=${user?.email}`,
+                    {
+                        headers : {
+                            authorization : `bearer ${localStorage.getItem('access_token')}`
+                        }
+
+                    }
+                );
                 const data = await res.json();
                 return data;
             }catch(err){
@@ -16,6 +26,19 @@ const AllBuyers = () => {
             }
         }
     })
+
+    // const {data : buyers = [], isLoading, refetch} = useQuery({
+    //     queryKey : ['buyers'],
+    //     queryFn : async () =>{
+    //         try{
+    //             const res = await fetch(`http://localhost:5000/users?role=buyer`);
+    //             const data = await res.json();
+    //             return data;
+    //         }catch(err){
+    //             console.error(err);
+    //         }
+    //     }
+    // })
 
     const handleDelete = buyer => {
         const {name, role, _id} = buyer;
@@ -43,7 +66,7 @@ const AllBuyers = () => {
 
     }
     
-    if(isLoading){
+    if(isLoading || loading){
         return <Loading></Loading>
     }
         
