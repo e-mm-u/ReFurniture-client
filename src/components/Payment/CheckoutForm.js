@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthContextProvider';
-import { useForm } from 'react-hook-form';
 
+const CheckoutForm = ({product}) => {
+    const {user} = useContext(AuthContext);
+    const {email, displayName : name} = user;
+    const navigate = useNavigate();
 
-
-const CheckoutForm = ({ product }) => {
-    console.log("P Key",process.env.REACT_APP_stripe_pk)
-    console.log("s Key",process.env.STRIPE_SK)
-
-    const { user } = useContext(AuthContext);
     const [cardError, setCardError] = useState('');
     const [success, setSuccess] = useState('');
     const [processing, setProcessing] = useState(false);
@@ -18,28 +16,24 @@ const CheckoutForm = ({ product }) => {
 
     const stripe = useStripe();
     const elements = useElements();
-
-    const { register, handleSubmit } = useForm();
     const { price_sale, _id } = product;
 
     useEffect(() => {
-        fetch('http://localhost:5000/create-payment-intent', {
-            method: 'POST',
+        // Create PaymentIntent as soon as the page loads
+        fetch("http://localhost:5000/create-payment-intent", {
+            method: "POST",
             headers: {
-                'content-type': 'application/json',
-                authorizarion : `bearer ${process.env.STRIPE_SK}`
+                "Content-Type": "application/json",
+                authorization : `bearer ${localStorage.getItem('access_token')}`
             },
-            body: JSON.stringify({ price: price_sale })
+            body: JSON.stringify({ price : price_sale }),
         })
-            .then(res => res.json())
-            .then(data => {
-                setClientSecret(data.clientSecret);
-            })
-    }, [price_sale])
+            .then((res) => res.json())
+            .then((data) => setClientSecret(data.clientSecret));
+    }, [price_sale]);
 
-    const handlePayment = async (data) => {
-
-        const {phone, location} = data ;
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         if (!stripe || !elements) {
             return
@@ -70,8 +64,8 @@ const CheckoutForm = ({ product }) => {
                 payment_method: {
                     card: card,
                     billing_details: {
-                        name: user?.displayName,
-                        email: user?.email
+                        name: name,
+                        email: email
                     },
                 },
             },
@@ -83,58 +77,38 @@ const CheckoutForm = ({ product }) => {
         }
         if (paymentIntent.status === "succeeded") {
             console.log('card info', card);
-            // info need to update product payment status
-            const payment = {
-                name : user?.displayName,
-                email : user?.email,
-                phone,
-                location,
+            // store payment info in the database
+            const buyer = {
                 transactionId: paymentIntent.id,
+                email,
+                name,
             }
             fetch(`http://localhost:5000/products/payment/${_id}`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json',
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
                 },
-                body: JSON.stringify(payment)
+                body: JSON.stringify(buyer)
             })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    // if (data.updatedCoun ) {
-                    //     setSuccess('Congrats! your payment completed');
-                    //     setTransactionId(paymentIntent.id);
-                    // }
+                    if (data.modifiedCount) {
+                        setSuccess('Congrats! your payment completed');
+                        setTransactionId(paymentIntent.id);
+                        navigate('/dashboard/booking');
+                    }
                 })
         }
         setProcessing(false);
+
+
     }
 
     return (
-        <div className='p-12'>
-            <form onSubmit={handleSubmit(handlePayment)}>
-
-                <div className="form-control">
-                    <label>Confirm Your Phone *</label>
-                    <input 
-                        {...register("phone", {
-                            required: "Phone is must to confirm purchase",
-                        })}
-                        type="text"
-                        required
-                    />
-                </div>
-                <div className="form-control">
-                    <label>Confirm Your Location *</label>
-                    <input 
-                        {...register("location", {
-                            required: "Location is must to confirm purchase",
-                        })}
-                        type="text"
-                        required
-                    />
-                </div>
-
+        <>
+            <form onSubmit={handleSubmit} className='w-96 p-5 my-10 flex flex-col justify-center gap-5'>
                 <CardElement
                     options={{
                         style: {
@@ -165,7 +139,7 @@ const CheckoutForm = ({ product }) => {
                     <p>Your transactionId: <span className='font-bold'>{transactionId}</span></p>
                 </div>
             }
-        </div>
+        </>
     );
 };
 

@@ -8,8 +8,8 @@ const stripePromise = loadStripe(process.env.REACT_APP_stripe_pk);
 
 const Payment = () => {
     console.log(stripePromise)
-
     const product = useLoaderData();
+    console.log(product);
 
     return (
         <div>
