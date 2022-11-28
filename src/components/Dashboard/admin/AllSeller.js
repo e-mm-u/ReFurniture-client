@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
+import { AuthContext } from '../../../Context/AuthContextProvider';
 import Loading from '../../Shared/Loading/Loading';
 
 const AllSeller = () => {
+    const {user, loading} = useContext(AuthContext);
+
     // const [sellers, setSellers] = useState([]);
     // const [verified, setVerified] = useState(false);
     
@@ -19,7 +22,17 @@ const AllSeller = () => {
         queryKey : ['sellers'],
         queryFn : async () =>{
             try{
-                const res = await fetch(`http://localhost:5000/users?role=seller`);
+                // const res = await fetch(`http://localhost:5000/users?role=seller`);
+                console.log(user?.email);
+                const res = await fetch(`http://localhost:5000/admin/users/sellers?email=${user?.email}`,
+                    {
+                        headers : {
+                            authorization : `bearer ${localStorage.getItem('access_token')}`
+                        }
+
+                    }
+                );
+
                 const data = await res.json();
                 return data;
             }catch(err){
@@ -27,6 +40,10 @@ const AllSeller = () => {
             }
         }
     })
+
+    if(loading){
+        return <Loading></Loading>
+    }
 
     const handleDelete = seller => {
         const {name, role, _id} = seller;
@@ -74,11 +91,11 @@ const AllSeller = () => {
                         sellers?.map((seller,i)=>
                             <tr key={seller._id}>
                                 <th>{i+1}</th>
-                                <td>{seller.name}</td>
-                                <td>{seller.email}</td>
+                                <td>{seller?.name}</td>
+                                <td>{seller?.email}</td>
                                 <td>
                                     {
-                                    seller.verified ? 
+                                    seller?.verified ? 
                                         <button className='btn btn-outline btn-xs'>Verified</button> 
                                         : 
                                         <button className='btn btn-outline btn-xs'>Verify</button>
