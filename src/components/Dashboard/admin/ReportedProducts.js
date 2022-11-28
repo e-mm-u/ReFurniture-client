@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
+import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthContextProvider';
 import Loading from '../../Shared/Loading/Loading';
 
@@ -24,7 +25,34 @@ const ReportedProducts = () => {
                 console.error(err);
             }
         }
-    })
+    });
+
+    const handleDelete = product => {
+        const { _id, product_name } = product;
+
+        let confirmation = null;
+        if(window.confirm(`Do you really want to delete product : ${product_name}}`)){
+            confirmation = true;
+        }else{
+            confirmation = false;
+        }
+        if(confirmation){
+
+            fetch(`http://localhost:5000/admin/products/reported/${_id}`, {
+                method : 'DELETE',
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.deletedCount === 1){
+                        toast.success(`product:${product_name}  \nDeleted successfully`);
+                        refetch();
+                    }
+                })
+        }
+    }
     
     if(isLoading || loading){
         return <Loading></Loading>
@@ -76,7 +104,7 @@ const ReportedProducts = () => {
                                     <p>{product?.transaction_id ? product.transaction_id : null}</p>
                                 </td>
 
-                                <td><button>delete</button></td>
+                                <td><button onClick={()=>handleDelete(product)}>delete</button></td>
                             </tr>
                         )
                     }

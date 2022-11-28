@@ -7,17 +7,6 @@ import Loading from '../../Shared/Loading/Loading';
 const AllSeller = () => {
     const {user, loading} = useContext(AuthContext);
 
-    // const [sellers, setSellers] = useState([]);
-    // const [verified, setVerified] = useState(false);
-    
-    // useEffect(()=>{
-    //     fetch(`http://localhost:5000/users?role=seller`)
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         // console.log(data);
-    //         setSellers(data);
-    //     });
-    // },[]);
     const {data : sellers = [], isLoading, refetch} = useQuery({
         queryKey : ['sellers'],
         queryFn : async () =>{
@@ -41,36 +30,68 @@ const AllSeller = () => {
         }
     })
 
-    if(loading){
-        return <Loading></Loading>
-    }
-
     const handleDelete = seller => {
-        const {name, role, _id} = seller;
+        const {name, _id} = seller;
         console.log({_id});
 
         let confirmation = null;
-        if(window.confirm(`Do you really want to delete ${role} : ${name}`)){
+        if(window.confirm(`Do you really want to delete seller : ${name}`)){
             confirmation = true;
         }else{
             confirmation = false;
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/users/${_id}`, {
+            fetch(`http://localhost:5000/admin/users/sellers/${_id}`, {
                 method : 'DELETE',
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }
             })
                 .then(res => res.json())
                 .then(data => {
                     if(data.deletedCount === 1){
-                        toast.success(`${role}:${name}  \nDeleted successfully`);
+                        toast.success(`seller :${name}  \nDeleted successfully`);
                         refetch();
                     }
                 })
         }
 
     }
-    if(isLoading){
+
+    // ----------------------------- v e r i f y  ----------------------------------------
+    const handleVerify = seller => {
+        const {name, _id} = seller;
+        console.log({_id});
+
+        let confirmation = null;
+        if(window.confirm(`Do you really want to verify seller : ${name}`)){
+            confirmation = true;
+        }else{
+            confirmation = false;
+        }
+        if(confirmation){
+
+            fetch(`http://localhost:5000/admin/users/sellers/${_id}`, {
+                method : 'PUT',
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.modifiedCount > 0){
+                        toast.success(`seller :${name}  \n Verified successfully`);
+                        refetch();
+                    }
+                })
+        }
+
+    }
+
+
+
+    if(isLoading || loading){
         return <Loading></Loading>
     }
     return (
@@ -96,9 +117,9 @@ const AllSeller = () => {
                                 <td>
                                     {
                                     seller?.verified ? 
-                                        <button className='btn btn-outline btn-xs'>Verified</button> 
+                                        <button className='btn btn-outline bg-green-500 btn-xs'>Verified</button> 
                                         : 
-                                        <button className='btn btn-outline btn-xs'>Verify</button>
+                                        <button onClick={()=>handleVerify(seller)} className='btn btn-outline btn-xs'>Verify</button>
                                     }
                                 </td>
                                 <td className='flex gap-2'>

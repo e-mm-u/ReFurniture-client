@@ -27,38 +27,28 @@ const AllBuyers = () => {
         }
     })
 
-    // const {data : buyers = [], isLoading, refetch} = useQuery({
-    //     queryKey : ['buyers'],
-    //     queryFn : async () =>{
-    //         try{
-    //             const res = await fetch(`http://localhost:5000/users?role=buyer`);
-    //             const data = await res.json();
-    //             return data;
-    //         }catch(err){
-    //             console.error(err);
-    //         }
-    //     }
-    // })
-
     const handleDelete = buyer => {
-        const {name, role, _id} = buyer;
+        const {name, _id} = buyer;
         console.log({_id});
 
         let confirmation = null;
-        if(window.confirm(`Do you really want to delete ${role} : ${name}`)){
+        if(window.confirm(`Do you really want to delete buyer : ${name}`)){
             confirmation = true;
         }else{
             confirmation = false;
         }
         if(confirmation){
 
-            fetch(`http://localhost:5000/users/${_id}`, {
+            fetch(`http://localhost:5000/admin/users/buyers/${_id}`, {
                 method : 'DELETE',
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }
             })
                 .then(res => res.json())
                 .then(data => {
                     if(data.deletedCount === 1){
-                        toast.success(`${role}:${name}  \nDeleted successfully`);
+                        toast.success(`Buyer:${name}  \nDeleted successfully`);
                         refetch();
                     }
                 })
