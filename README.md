@@ -1,3 +1,68 @@
+#### ReFurniture is a marketplace web application where people can buy and sell second hand / old / used products ( Furniture ).
+Here is the live site : https://recycle-furniture.web.app/
+Feel free to visit.
+
+# More about ReFurniture
+
+### Tech & Tools
+
+## Frontend :
+  * React - a javascript library
+  * TailWind CSS - a css framework
+  * Daisy UI to implement tailwind components
+    
+## Backend :
+  * Express - Nodejs framework
+  * JSON WEB TOKEN
+  
+## Database : 
+   * MongoDB
+   
+## Authentication & deploy :
+  * Firebase
+  
+
+   
+### ReFurniture as a User :
+
+* Here you can register as a BUYER or a SELLER . If have to choose one before while registering. You can use google login also. If you use google login, you will be considered as a BUYER.
+
+* As a BUYER, you can visit products by category. You could see advertise in the home page. But to add products in your wishlist or to book a product you must log in.
+
+* There is a blog section that is open to all. Anyone can read. Don't want to login? then Happy Reading :) 
+
+* Logged in user can add products to his/her wishlist. User can book any product. Further more user can report product to admin.
+
+* User have own dashboard . Where in different routes user can see wishlist products, booking products and purchased products.
+
+* STRIPE is used for payment . User can pay via stripe to purchase a product
+
+
+### ReFurniture as a Seller :
+* If you register as a seller you will have your own dashboard for 
+    * adding products
+    * see his/her posted propducts
+    * see his buyers
+
+* Seller can delete his/her product
+
+* Seller can advertise his/her products
+
+### ReFurniture as a Admin :
+
+* Admin can see all the registered products
+* Admin can see all the sellers
+* Admin can delete any seller or any user
+* Admin can see the reported product and can delete reported products also.
+
+
+### Admin Credential :
+
+  adminEmail: admin@gmail.com
+  
+  adminPassword: adminpass
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
