@@ -27,6 +27,33 @@ const MyProducts = () => {
         }
     });
 
+    const handleAdvertise = product => {
+        const { _id, product_name } = product;
+
+        let confirmation = null;
+        if(window.confirm(`Do you really want to advertise this product : ${product_name}`)){
+            confirmation = true;
+        }else{
+            confirmation = false;
+        }
+        if(confirmation){
+
+            fetch(`http://localhost:5000/seller/products/${_id}`, {
+                method : 'PUT',
+                headers : {
+                    authorization : `bearer ${localStorage.getItem('access_token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.acknowledged){
+                        toast.success(`product:${product_name}  \nAdvertised successfully`);
+                        refetch();
+                    }
+                })
+        }
+    }
+
     const handleDelete = product => {
         const { _id, product_name } = product;
 
@@ -100,10 +127,21 @@ const MyProducts = () => {
 
                                 {/* status */}
                                 <td>
-                                    { product.paid ? <p>Sold :) </p> : <p> Not sold yet </p> }
+                                    { product.paid ? 
+                                        <p className='text-green-500'>Sold :) </p> 
+                                        : 
+                                        <div className='flex gap-2 items-center'>
+                                            <p className='text-red-500'> Not sold yet </p>
+                                            <button onClick={()=>handleAdvertise(product)}
+                                                className="btn btn-outline btn-xs"
+                                            >Advertise</button>
+                                        </div> 
+                                    }
                                 </td>
 
-                                <td><button onClick={()=>handleDelete(product)}>delete</button></td>
+                                <td>
+                                    <button onClick={()=>handleDelete(product)}>Delete</button>
+                                </td>
                             </tr>
                         )
                     }
