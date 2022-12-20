@@ -8,8 +8,8 @@ const Banner = () => {
             <div className="hero-overlay bg-opacity-60"></div>
             <div className="hero-content text-center text-neutral-content">
                 <div className="max-w-md">
-                    <h1 className="mb-5  text-xl sm:text-2xl  md:text-3xl  lg:text-5xl font-bold">Re Furniture</h1>
-                    <p className="mb-5 text-xs sm:text-sm md:text-lg"> Makes Furniture Affordable to you </p>
+                    <h1 className="mb-5  text-7xl font-bold banner_text_h1">Re Furniture</h1>
+                    <p className="mb-5 text-3xl banner_text_h1"> Makes Furniture Affordable to you </p>
                 </div>
             </div>
         </div>
@@ -17,3 +17,5 @@ const Banner = () => {
 };
 
 export default Banner;
+// text-xl sm:text-2xl  md:text-3xl  lg:
+// text-xs sm:text-sm md:text-lg 
