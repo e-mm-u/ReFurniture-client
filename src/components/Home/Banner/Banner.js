@@ -1,5 +1,5 @@
 import React from 'react';
-import img from '../../images/drawingroom1.webp'
+import img from '../../images/banner_m1.webp'
 
 const Banner = () => {
     return (
